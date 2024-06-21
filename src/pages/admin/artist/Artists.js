@@ -1,27 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import Layout from "../../Layout/Layout";
-import Calendar from "../../components/Calendar/Calendar";
-import JsonData from "../../JsonData/ScheduledWishes.json";
+import Calendar from "../../../components/Calendar/Calendar";
 import ReactPaginate from "react-paginate";
 import { FaPen } from "react-icons/fa";
 import { MdBlockFlipped } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FiPlus } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import Layout from "../../../Layout/Layout";
+import { artistList } from "../../../store/action/artistAction";
 
-const ScheduledWishes = () => {
-  const tableData = JsonData.tableData;
+const Artist = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getArtistData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getArtistData = async () => {
+    await dispatch(artistList());
+  };
+
+  const tableData = useSelector((state) => state.artistReducer.artistList);
+
   const itemsPerPage = 10;
 
   // State for pagination
   const [currentPage, setCurrentPage] = useState(0);
 
   // Calculate number of pages
-  const pageCount = Math.ceil(tableData.length / itemsPerPage);
+  const pageCount = Math.ceil(tableData?.length / itemsPerPage);
 
   // Slice data for current page
   const offset = currentPage * itemsPerPage;
-  const currentItems = tableData.slice(offset, offset + itemsPerPage);
+  const currentItems = tableData?.slice(offset, offset + itemsPerPage);
 
   // Handle page change
   const handlePageClick = ({ selected }) => {
@@ -33,17 +48,17 @@ const ScheduledWishes = () => {
       <div className="bg-stone-200 p-4 md:p-6 flex flex-col md:flex-row md:justify-between md:items-center">
         <div className="flex items-center mb-4 md:mb-0">
           <h2 className="text-2xl md:text-4xl font-extrabold mr-4 text-zinc-800">
-            Scheduled Wishes
+            Artists
           </h2>{" "}
           <span className="bg-zinc-800 text-white px-4 py-1 text-lg md:text-xl font-bold rounded-lg">
-            05
+            {currentItems.length}
           </span>
         </div>
         <div className="flex items-center bg-blue-50 rounded-full p-2 w-full md:w-60">
           <IoSearchOutline className="ml-2" />
           <input
             type="text"
-            placeholder="Search for something"
+            placeholder="Search"
             className="bg-blue-50 px-2 py-1 rounded-md text-black dark:text-white focus:outline-none ml-2 w-full md:w-40"
           />
         </div>
@@ -55,7 +70,16 @@ const ScheduledWishes = () => {
 
       {/* Table to display JSON data */}
       <div className="overflow-x-auto">
-        <h2 className="my-3 font-extrabold text-3xl">Scheduled Wishes</h2>
+        <div className="flex flex-col md:flex-row justify-between lg:items-center py-3">
+          <h2 className="my-3 font-extrabold text-3xl">Artists details</h2>
+          <button className="mt-3 md:mt-0 inline-flex items-center justify-start lg:w-3/2 h-18 px-4 py-2 text-xl text-white dark:text-white bg-black dark:bg-gray-800 hover:bg-black-2 hover:text-white dark:hover:bg-gray-700 border-2 border-gray-300 focus:outline-none rounded-xl">
+            <div className="bg-slate-400 rounded-full mr-7">
+              <FiPlus className="p-2 text-4xl" />
+            </div>
+            Add new Artist
+          </button>
+        </div>
+
         <table className="min-w-full bg-white border border-gray-200 ">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -63,16 +87,16 @@ const ScheduledWishes = () => {
                 S.No
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Birthday Wishes
+                artist name
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Voice Over Artist
+                State
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Customer
+                Email
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Date and Time (time zone)
+                Phone
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
                 More Information
@@ -83,29 +107,30 @@ const ScheduledWishes = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {currentItems.map((item, index) => (
+            {currentItems?.map((item, index) => (
               <tr key={index} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-black-2">
-                  {item["S.no"]}
+                  {index + 1}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Birthday Wishes"]}
+                  {item.firstName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Voice Over artist"]}
+                  {item.state}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Customer"]}
+                  {item.email}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Date and time(time zone)"]}
+                  {item.mobileNumber}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
                   {/* {item["More Information"]} */}
                   <Link
-                    to={`/wishdetails/${item["S.no"]}`}
-                    className="text-blue-500 hover:text-blue-700 border-b">
-                    {item["More Information"]}
+                    to={`/artist/${item._id}`}
+                    className="text-blue-500 hover:text-blue-700 border-b"
+                  >
+                    {"More Information"}
                   </Link>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
@@ -145,4 +170,4 @@ const ScheduledWishes = () => {
   );
 };
 
-export default ScheduledWishes;
+export default Artist;

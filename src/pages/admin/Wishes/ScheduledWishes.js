@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import Layout from "../../Layout/Layout";
-import Calendar from "../../components/Calendar/Calendar";
-import JsonData from "../../JsonData/ScheduledWishes.json";
+import Layout from "../../../Layout/Layout";
+import Calendar from "../../../components/Calendar/Calendar";
+import JsonData from "../../../JsonData/ScheduledWishes.json";
 import ReactPaginate from "react-paginate";
+import { FaPen } from "react-icons/fa";
+import { MdBlockFlipped } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { scheduleList } from "../../../store/action/wishAction";
 
-const WishesHistory = () => {
-  const tableData = JsonData.tableData;
+// import WishReducer from './../../store/reducer/wishReducer';
+
+const ScheduledWishes = () => {
+
+  const dispatch = useDispatch();
+
+  const tableData = useSelector((state) => state.WishReducer.list);
+
+
+  useEffect(() => {
+    getScheduleData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getScheduleData = async () => {
+    await dispatch(scheduleList());
+  };
+
   const itemsPerPage = 10;
 
   // State for pagination
@@ -21,6 +41,7 @@ const WishesHistory = () => {
   const offset = currentPage * itemsPerPage;
   const currentItems = tableData.slice(offset, offset + itemsPerPage);
 
+ 
   // Handle page change
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
@@ -31,14 +52,17 @@ const WishesHistory = () => {
       <div className="bg-stone-200 p-4 md:p-6 flex flex-col md:flex-row md:justify-between md:items-center">
         <div className="flex items-center mb-4 md:mb-0">
           <h2 className="text-2xl md:text-4xl font-extrabold mr-4 text-zinc-800">
-            Wishes History
-          </h2>
+            Scheduled Wishes
+          </h2>{" "}
+          <span className="bg-zinc-800 text-white px-4 py-1 text-lg md:text-xl font-bold rounded-lg">
+            05
+          </span>
         </div>
         <div className="flex items-center bg-blue-50 rounded-full p-2 w-full md:w-60">
           <IoSearchOutline className="ml-2" />
           <input
             type="text"
-            placeholder="Search for something"
+            placeholder="Search"
             className="bg-blue-50 px-2 py-1 rounded-md text-black dark:text-white focus:outline-none ml-2 w-full md:w-40"
           />
         </div>
@@ -50,15 +74,7 @@ const WishesHistory = () => {
 
       {/* Table to display JSON data */}
       <div className="overflow-x-auto">
-        <h2 className="my-3 font-extrabold text-3xl">Wishes History</h2>
-
-        <div className="lg:py-2 py-3 flex flex-wrap gap-2 justify-start">
-          <button className="border-2 rounded-full px-5 py-1 font-bold hover:bg-black hover:text-white dark:bg-black dark:hover:bg-black-2 dark:text-white">All</button>
-          <button className="border-2 rounded-full px-5 py-1 font-bold hover:bg-black hover:text-white dark:bg-black dark:hover:bg-black-2 dark:text-white">Call Answered</button>
-          <button className="border-2 rounded-full px-5 py-1 font-bold hover:bg-black hover:text-white dark:bg-black dark:hover:bg-black-2 dark:text-white">Voice Mailed</button>
-          <button className="border-2 rounded-full px-5 py-1 font-bold hover:bg-black hover:text-white dark:bg-black dark:hover:bg-black-2 dark:text-white">Number Not working</button>
-        </div>
-
+        <h2 className="my-3 font-extrabold text-3xl">Scheduled Wishes</h2>
         <table className="min-w-full bg-white border border-gray-200 ">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -66,10 +82,10 @@ const WishesHistory = () => {
                 S.No
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Birthday Wishes for
+                Birthday Wishes
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Voice Over artist
+                Voice Over Artist
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
                 Customer
@@ -78,13 +94,10 @@ const WishesHistory = () => {
                 Date and Time (time zone)
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                Status
+                More Information
               </th>
               <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                feedback by <br/>Voice Over artist
-              </th>
-              <th className="px-6 py-3 text-left text-base font-extrabold text-gray-500 tracking-wider">
-                File
+                Actions
               </th>
             </tr>
           </thead>
@@ -92,33 +105,32 @@ const WishesHistory = () => {
             {currentItems.map((item, index) => (
               <tr key={index} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-black-2">
-                  {item["S.no"]}
+                {index + 1} 
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Birthday Wishes"]}
+                  {item.birthdayWishesName.firstName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Voice Over artist"]}
+                  {item.voiceArtist.firstName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Customer"]}
+                  {item.customer.firstName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Date and time(time zone)"]}
-                </td>{" "}
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Status"]}
-                </td>{" "}
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["FeedBackByVoiceOverArtist"]}
+                  {item.dateAndTime}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
+                  {/* {item["More Information"]} */}
                   <Link
-                    to={`/wishdetails/${item["S.no"]}`}
-                    className="text-blue-500 hover:text-blue-700 border-b">
-                    {/* {item["File"]} */}
-                    View File
+                    to={`/wishdetails/${item._id}`}
+                    className="text-blue-500 hover:text-blue-700 border-b"
+                  >
+                    {item.moreInformation}
                   </Link>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
+                  <FaPen className="inline-block text-gray-600 cursor-pointer mr-7" />
+                  <MdBlockFlipped className="inline-block text-gray-600 cursor-pointer" />
                 </td>
               </tr>
             ))}
@@ -153,4 +165,4 @@ const WishesHistory = () => {
   );
 };
 
-export default WishesHistory;
+export default ScheduledWishes;

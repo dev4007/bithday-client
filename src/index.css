@@ -36,9 +36,9 @@ code {
 }
 
 /* Adjust other styles as per your design */
-.transition-all:hover{
+/* .transition-all:hover{
   border-bottom: 2px solid #a8a29e;
-}
+} */
 .transition-all-active{
   border-bottom: 2px solid #a8a29e;
 }

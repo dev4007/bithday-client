@@ -36,7 +36,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
           <IoSearchOutline className="ml-2" />
           <input
             type="text"
-            placeholder="Search for something"
+            placeholder="Search"
             className="bg-blue-50 px-2 py-1 rounded-md text-black dark:text-white focus:outline-none"
           />
         </div>

@@ -19,9 +19,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     { icon: <CiCalendar className="mr-3 text-2xl" />, label: "Scheduled Wishes", to: "/scheduledwishes" },
     { icon: <BsFillBookmarkFill className="mr-3 text-2xl" />, label: "Wishes history", to: "/wisheshistory" },
     { icon: <FaUser className="mr-3 text-2xl" />, label: "Customers", to: "/customers" },
-    { icon: <FaRegIdCard className="mr-3 text-2xl" />, label: "Voice Artists", to: "/voiceartists" },
+    { icon: <FaRegIdCard className="mr-3 text-2xl" />, label: "Voice Artists", to: "/artist" },
     { icon: <IoNotificationsOutline className="mr-3 text-2xl" />, label: "Notifications", to: "/notifications" },
-    { icon: <TbChartHistogram className="mr-3 text-2xl" />, label: "Transaction History", to: "/transactionhistory" },
+    { icon: <TbChartHistogram className="mr-3 text-2xl" />, label: "Transaction History", to: "/history" },
     { icon: <IoSettingsOutline className="mr-3 text-2xl" />, label: "Settings", to: "/settings" },
   ];
 
@@ -34,7 +34,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     >
       <div className="flex items-center justify-between p-3 py-7 px-9">
         <h1 className={`text-2xl font-extrabold cursor-pointer ${sidebarOpen ? "block" : "hidden"}`} onClick={toggleSidebar}>
-          <i> WISH APP</i>
+          <i> Admin</i>
         </h1>
         <h1 className={`text-lg font-bold cursor-pointer ${!sidebarOpen ? "hidden" : "block"}`} onClick={toggleSidebar}>
           <FaArrowLeft />

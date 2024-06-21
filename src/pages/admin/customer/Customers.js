@@ -1,28 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import Layout from "../../Layout/Layout";
-import Calendar from "../../components/Calendar/Calendar";
-import JsonData from "../../JsonData/Customers.json";
+import Layout from "../../../Layout/Layout";
+import Calendar from "../../../components/Calendar/Calendar";
 import ReactPaginate from "react-paginate";
 import { FaPen } from "react-icons/fa";
 import { MdBlockFlipped } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { customerList } from "../../../store/action/customerAction";
+
 
 const Customers = () => {
-  const tableData = JsonData.tableData;
+  // const tableData = JsonData.tableData;
+
+  const dispatch = useDispatch();
+
+  // const dispatch = useDispatch();
+
+  useEffect(() => {
+    getCustomerData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getCustomerData = async () => {
+    await dispatch(customerList());
+  };
+
+  const tableData = useSelector((state) => state.customerReducer.customerList);
+
   const itemsPerPage = 10;
 
   // State for pagination
   const [currentPage, setCurrentPage] = useState(0);
 
   // Calculate number of pages
-  const pageCount = Math.ceil(tableData.length / itemsPerPage);
+  const pageCount = Math.ceil(tableData?.length / itemsPerPage);
 
   // Slice data for current page
   const offset = currentPage * itemsPerPage;
-  const currentItems = tableData.slice(offset, offset + itemsPerPage);
+  const currentItems = tableData?.slice(offset, offset + itemsPerPage);
 
   // Handle page change
   const handlePageClick = ({ selected }) => {
@@ -37,14 +55,14 @@ const Customers = () => {
             Customers
           </h2>{" "}
           <span className="bg-zinc-800 text-white px-4 py-1 text-lg md:text-xl font-bold rounded-lg">
-            05
+          {currentItems.length}
           </span>
         </div>
         <div className="flex items-center bg-blue-50 rounded-full p-2 w-full md:w-60">
           <IoSearchOutline className="ml-2" />
           <input
             type="text"
-            placeholder="Search for something"
+            placeholder="Search"
             className="bg-blue-50 px-2 py-1 rounded-md text-black dark:text-white focus:outline-none ml-2 w-full md:w-40"
           />
         </div>
@@ -93,29 +111,30 @@ const Customers = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {currentItems.map((item, index) => (
+            {currentItems?.map((item, index) => (
               <tr key={index} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-black-2">
-                  {item["S.no"]}
+                  {index + 1}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["CustomerName"]}
+                  {item.firstName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["State"]}
+                  {item.state}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Email"]}
+                  {item.email}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
-                  {item["Phone"]}
+                  {item.mobileNumber}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
                   {/* {item["More Information"]} */}
                   <Link
-                    to={`/wishdetails/${item["S.no"]}`}
-                    className="text-blue-500 hover:text-blue-700 border-b">
-                    {item["Moreinfo"]}
+                    to={`/customers/${item._id}`}
+                    className="text-blue-500 hover:text-blue-700 border-b"
+                  >
+                    {"More Information"}
                   </Link>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
