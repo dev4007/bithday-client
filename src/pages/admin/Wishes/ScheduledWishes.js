@@ -122,7 +122,7 @@ const ScheduledWishes = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
                   {/* {item["More Information"]} */}
                   <Link
-                    to={`/wishdetails/${item._id}`}
+                    to={`/wish/${item._id}`}
                     className="text-blue-500 hover:text-blue-700 border-b"
                   >
                     {item.moreInformation}

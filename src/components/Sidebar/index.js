@@ -16,13 +16,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const menuItems = [
     { icon: <FaHome className="mr-3 text-2xl" />, label: "Dashboard", to: "/" },
-    { icon: <CiCalendar className="mr-3 text-2xl" />, label: "Scheduled Wishes", to: "/scheduledwishes" },
-    { icon: <BsFillBookmarkFill className="mr-3 text-2xl" />, label: "Wishes history", to: "/wisheshistory" },
+    { icon: <CiCalendar className="mr-3 text-2xl" />, label: "Scheduled Wishes", to: "/schedule-wishes" },
+    { icon: <BsFillBookmarkFill className="mr-3 text-2xl" />, label: "Wishes history", to: "/wishes-history" },
     { icon: <FaUser className="mr-3 text-2xl" />, label: "Customers", to: "/customers" },
     { icon: <FaRegIdCard className="mr-3 text-2xl" />, label: "Voice Artists", to: "/artist" },
     { icon: <IoNotificationsOutline className="mr-3 text-2xl" />, label: "Notifications", to: "/notifications" },
     { icon: <TbChartHistogram className="mr-3 text-2xl" />, label: "Transaction History", to: "/history" },
     { icon: <IoSettingsOutline className="mr-3 text-2xl" />, label: "Settings", to: "/settings" },
+
+    // { icon: <IoSettingsOutline className="mr-3 text-2xl" />, label: "Register", to: "/register" },
+
+
   ];
 
   return (

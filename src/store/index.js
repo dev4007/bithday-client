@@ -5,9 +5,11 @@ import WishReducer from './reducer/wishReducer';
 import customerReducer from './reducer/customerReducer';
 import artistReducer from './reducer/artistReducer';
 import notificationReducer from './reducer/notificationReducer';
+import authReducer from './reducer/authReducer';
 
 
 const rootReducer = combineReducers({
+    authReducer,
     WishReducer,
     customerReducer,
     artistReducer,

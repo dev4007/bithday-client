@@ -114,7 +114,7 @@ const WishesHistory = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-2">
                   <Link
-                    to={`/wishdetails/${item["S.no"]}`}
+                    to={`/wish/${item["S.no"]}`}
                     className="text-blue-500 hover:text-blue-700 border-b">
                     {/* {item["File"]} */}
                     View File
